@@ -1,0 +1,111 @@
+<div class="simulation-container">
+  <h1>Monte Carlo Simulation - Pi Estimation</h1>
+  
+  <div class="info-section">
+    <h2>How it works</h2>
+    <p>
+      This simulation estimates the value of π using a Monte Carlo method. 
+      Random points are generated in a unit square, and we count how many fall 
+      inside a quarter circle. The ratio gives us an estimate: π ≈ 4 × (points inside / total points).
+    </p>
+  </div>
+
+  <div class="main-content">
+    <div class="canvas-section">
+      <canvas #canvas></canvas>
+      <p class="canvas-legend">
+        <span class="inside-point">●</span> Points inside circle
+        <span class="outside-point">●</span> Points outside circle
+      </p>
+    </div>
+
+    <div class="controls-section">
+      <h3>Controls</h3>
+      
+      <div class="control-group">
+        <label for="numberOfPoints">Number of Points:</label>
+        <input 
+          type="number" 
+          id="numberOfPoints" 
+          [(ngModel)]="numberOfPoints" 
+          [disabled]="isRunning"
+          min="100"
+          max="1000000"
+          step="100"
+        />
+      </div>
+
+      <div class="control-group">
+        <label for="speed">Animation Speed:</label>
+        <input 
+          type="range" 
+          id="speed" 
+          [(ngModel)]="speed" 
+          [disabled]="isRunning"
+          min="1"
+          max="100"
+          step="1"
+        />
+        <span>{{ speed }} points/frame</span>
+      </div>
+
+      <div class="button-group">
+        <button 
+          (click)="startSimulation()" 
+          [disabled]="isRunning"
+          class="btn btn-primary"
+        >
+          Start Animation
+        </button>
+        
+        <button 
+          (click)="stopSimulation()" 
+          [disabled]="!isRunning"
+          class="btn btn-warning"
+        >
+          Stop
+        </button>
+        
+        <button 
+          (click)="runInstantSimulation()" 
+          [disabled]="isRunning"
+          class="btn btn-success"
+        >
+          Run Instantly
+        </button>
+        
+        <button 
+          (click)="resetSimulation()" 
+          [disabled]="isRunning"
+          class="btn btn-secondary"
+        >
+          Reset
+        </button>
+      </div>
+
+      <div class="results-section">
+        <h3>Results</h3>
+        <div class="result-item">
+          <span class="label">Total Points:</span>
+          <span class="value">{{ totalPoints | number }}</span>
+        </div>
+        <div class="result-item">
+          <span class="label">Points Inside Circle:</span>
+          <span class="value">{{ insideCircle | number }}</span>
+        </div>
+        <div class="result-item">
+          <span class="label">Estimated π:</span>
+          <span class="value highlight">{{ estimatedPi | number:'1.2-10' }}</span>
+        </div>
+        <div class="result-item">
+          <span class="label">Actual π:</span>
+          <span class="value">{{ actualPi | number:'1.2-10' }}</span>
+        </div>
+        <div class="result-item">
+          <span class="label">Error:</span>
+          <span class="value" [class.low-error]="error < 1">{{ error | number:'1.2-4' }}%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
